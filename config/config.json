@@ -1,6 +1,0 @@
-{
-  "user": "db_user",
-  "pw": "db_pw",
-  "db": "db_name",
-  "address": "db.address:port"
-}
