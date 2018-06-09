@@ -21,6 +21,17 @@ module.exports = (app, db) => {
     });
   });
 
+  app.get('/queue/:name', (req, res) => {
+    const name = { 'name': req.params.name };
+    db.collection('queue').find().toArray(name, (err, item) => {
+      if (err) {
+        res.send({'error':'An error has occurred'});
+      } else {
+        res.send(item);
+      }
+    });
+  });
+
   app.delete('/queue', (req, res) => {
     db.collection('queue').deleteOne({}, (err, item) => {
       if (err) {
