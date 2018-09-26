@@ -21,9 +21,9 @@ module.exports = (app, db) => {
     });
   });
 
-  app.get('/queue/:name', (req, res) => {
-    const name = { 'name': req.params.name };
-    db.collection('queue').find().toArray(name, (err, item) => {
+  app.get('/queue/check/:name', (req, res) => {
+    const username = { 'name': req.params.name };
+    db.collection('queue').find({name: username.name}).toArray( (err, item) => {
       if (err) {
         res.send({'error':'An error has occurred'});
       } else {
@@ -43,7 +43,7 @@ module.exports = (app, db) => {
   });
 
   app.delete('/queue/all', (req, res) => {
-    db.collection('queue').deleteMany( { }, (err, item) => {
+    db.collection('queue').deleteMany( {}, (err, item) => {
       if (err) {
         res.send({'error':'An error has occurred'});
       } else {
@@ -51,6 +51,19 @@ module.exports = (app, db) => {
       }
     });
   });
+
+  app.delete('/queue/specific', (req, res) => {
+    const username = { 'name': req.body.name };
+    db.collection('queue').deleteMany( {name: username.name}, (err, item) => {
+      if (err) {
+        res.send({'error':'An error has occurred'});
+      } else {
+        res.send('Name ' + item + ' deleted');
+      }
+    });
+  });
+
+
 
   app.post('/queue', (req, res) => {
     const d = new Date();
