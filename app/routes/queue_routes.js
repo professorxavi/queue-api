@@ -2,7 +2,7 @@ const ObjectID = require('mongodb').ObjectID;
 
 module.exports = (app, db) => {
   app.get('/queue', (req, res) => {
-    db.collection('queue').find().limit(5).toArray((err, item) => {
+    db.collection('queue').find().limit(3).toArray((err, item) => {
       if (err) {
         res.send({'error':'An error has occurred'});
       } else {
@@ -52,22 +52,19 @@ module.exports = (app, db) => {
     });
   });
 
-  app.delete('/queue/specific', (req, res) => {
-    const username = { 'name': req.body.name };
-    db.collection('queue').deleteMany( {name: username.name}, (err, item) => {
+  app.delete('/queue/specific/:name', (req, res) => {
+    db.collection('queue').deleteMany( {name: req.params.name}, (err, item) => {
       if (err) {
         res.send({'error':'An error has occurred'});
       } else {
-        res.send('Name ' + item + ' deleted');
+        res.send('User deleted');
       }
     });
   });
 
-
-
   app.post('/queue', (req, res) => {
     const d = new Date();
-    const user = { name: req.body.name, ign: req.body.ign, fc: req.body.fc, time: d.getTime()};
+    const user = { name: req.body.name, ign: req.body.ign, time: d.getTime()};
     db.collection('queue').insert(user, (err, result) => {
       if (err) {
         res.send({ 'error': 'An error has occurred' });

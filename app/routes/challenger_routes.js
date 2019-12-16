@@ -24,7 +24,8 @@ module.exports = (app, db) => {
   });
 
   app.post('/challenger', (req, res) => {
-    const user = { name: req.body.name, ign: req.body.ign, fc: req.body.fc };
+    const record = { wins: 0, losses: 0 };
+    const user = { name: req.body.name, ign: req.body.ign, record: record };
     db.collection('challengers').insert(user, (err, result) => {
       if (err) {
         res.send({ 'error': 'An error has occurred' });
